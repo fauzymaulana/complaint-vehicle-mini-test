@@ -1,0 +1,137 @@
+[versions]
+agp = "8.4.2"
+appUpdateKtx = "2.1.0"
+assetDeliveryKtx = "2.2.2"
+coreSplashscreen = "1.0.1"
+credentials = "1.3.0"
+googleid = "1.1.0"
+googleidVersion = "1.1.0"
+kotlin = "1.9.0"
+kapt = "1.6.20"
+coreKtx = "1.13.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.2"
+constraintlayout = "2.1.4"
+jetbrainsKotlinJvm = "1.9.0"
+navigation = "2.5.3"
+legacySupportV4 = "1.0.0"
+lifecycleLivedataKtx = "2.8.6"
+lifecycleViewmodelKtx = "2.8.6"
+fragmentKtx = "1.8.4"
+androidXFragment = "1.5.7"
+okhttpBom = "4.11.0"
+okhttpInterceptor = "4.9.3"
+playServicesAuth = "21.2.0"
+preference = "1.2.0"
+retrofit = "2.9.0"
+realm = "10.15.1"
+gson = "2.6.0"
+rxJava = "2.2.21"
+rxAndroid = "2.1.1"
+rxAdapter = "2.9.0"
+rxKotlin = "3.0.1"
+shimmer = "0.5.0"
+glide = "4.15.1"
+glideCompiler = "4.4.0"
+viewPager = "1.0.0"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.9.3"
+composeBom = "2023.08.00"
+pagingCommon = "3.2.1"
+
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdateKtx" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdateKtx" }
+asset-delivery-ktx = { module = "com.google.android.play:asset-delivery-ktx", version.ref = "assetDeliveryKtx" }
+feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "appUpdateKtx" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewPager" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-paging-common-ktx = { module = "androidx.paging:paging-common-ktx", version.ref = "pagingCommon" }
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingCommon" }
+androidx-paging-rxjava-ktx = { module = "androidx.paging:paging-rxjava2-ktx", version.ref = "pagingCommon" }
+
+
+#Navigation
+navigation-common = { module = "androidx.navigation:navigation-common-ktx", version.ref = "navigation" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+navigation-dynamicFeatures-fragment = { module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "navigation" }
+navigation-dynamicFeatures-runtime = { module = "androidx.navigation:navigation-dynamic-features-runtime", version.ref = "navigation" }
+navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-safeArgs-generator = { module = "androidx.navigation:navigation-safe-args-generator", version.ref = "navigation" }
+navigation-safeArgs-gradlePlugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+
+jetbrains-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+
+# Okhttp
+okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttpBom" }
+okhttp = { module = "com.squareup.okhttp3:okhttp" }
+okhttp-loging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpInterceptor" }
+
+# Retrofit
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson-converter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "gson" }
+retrofit-scalars-converter = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
+
+# Rx
+rx-adapter = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "rxAdapter" }
+rx-java = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxJava" }
+rx-android = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxAndroid" }
+rx-kotlin = {module = "io.reactivex.rxjava3:rxkotlin", version.ref= "rxKotlin" }
+
+#Preference
+shared-preference = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
+
+#Realm
+realm-plugin = {module = "io.realm:realm-gradle-plugin", version.ref="realm"}
+
+#Shimmer
+shimmer-facebook = {module="com.facebook.shimmer:shimmer", version.ref="shimmer"}
+
+#Glide
+glide-img = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideCompiler" }
+
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-android = { id = "kotlin.android" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kapt" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "agp" }
+

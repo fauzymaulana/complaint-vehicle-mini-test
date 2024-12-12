@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">VehicleComplaintReportMiniTest</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="list_label_complaint_report">Laporan Keluhan</string>
+    <string name="list_label_complaint_notes">Catatan Keluhan:</string>
+    <string name="content_description_label_image_preview">Preview</string>
+    <string name="content_description_label_notes">Notes</string>
+    <string name="content_description_label_reported_by">Reported By</string>
+    <string name="content_description_label_name_vehicle">Vehicle</string>
+    <string name="content_description_label_complaint_report">Complaint Report</string>
+</resources>

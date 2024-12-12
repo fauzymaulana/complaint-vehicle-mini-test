@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/listReportFragment">
+
+    <fragment
+        android:id="@+id/listReportFragment"
+        android:name="com.appero.vehiclecomplaint.presentation.list.ListReportFragment"
+        android:label="fragment_list_report"
+        tools:layout="@layout/fragment_list_report" />
+</navigation>

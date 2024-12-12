@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ButtonRoundedRect" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent.12</item>
+        <item name="minHeight">48dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="rippleColor">@color/material_dynamic_primary40</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent.12" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">12dp</item>
+    </style>
+</resources>
