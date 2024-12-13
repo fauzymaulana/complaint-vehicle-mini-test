@@ -1,4 +1,4 @@
-package com.klik.adzkia.core.utilities.permission
+package com.appero.vehiclecomplaint.utilities.permission
 
 interface PermissionListener {
   fun   shouldShowRationaleInfo()

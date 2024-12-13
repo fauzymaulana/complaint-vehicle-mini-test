@@ -9,5 +9,29 @@
         android:id="@+id/listReportFragment"
         android:name="com.appero.vehiclecomplaint.presentation.list.ListReportFragment"
         android:label="fragment_list_report"
-        tools:layout="@layout/fragment_list_report" />
+        tools:layout="@layout/fragment_list_report" >
+        <action
+            android:id="@+id/action_listReportFragment_to_cameraCaptureFragment"
+            app:destination="@id/cameraCaptureFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraCaptureFragment"
+        android:name="com.appero.vehiclecomplaint.presentation.camera.CameraCaptureFragment"
+        android:label="fragment_camera_capture"
+        tools:layout="@layout/fragment_camera_capture" >
+        <action
+            android:id="@+id/action_cameraCaptureFragment_to_previewImageFragment"
+            app:destination="@id/previewImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/previewImageFragment"
+        android:name="com.appero.vehiclecomplaint.presentation.preview.PreviewImageFragment"
+        android:label="fragment_preview_image"
+        tools:layout="@layout/fragment_preview_image" >
+
+        <argument
+            android:name="pathImage"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
 </navigation>

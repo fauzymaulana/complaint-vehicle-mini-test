@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="168"
+    android:viewportHeight="168">
 
-</selector>
+    <item
+        android:id="@+id/pressed"
+        android:drawable="@drawable/ic_shutter"
+        android:state_pressed="true" />
+
+    <item
+        android:id="@+id/unpressed"
+        android:drawable="@drawable/ic_shutter" />
+</animated-selector>
