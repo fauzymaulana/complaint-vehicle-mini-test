@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ButtonRoundedRect" parent="Widget.Material3.Button.ElevatedButton">
         <item name="backgroundTint">?attr/colorPrimary</item>
         <item name="android:textSize">15sp</item>
@@ -28,5 +29,15 @@
 
     <style name="ShapeAppearance.App.SmallComponent.12" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="Widget.Theme.VehicleComplaintReportMiniTest.MyView" parent="">
+        <item name="android:background">@color/gray_400</item>
+        <item name="exampleColor">@color/light_blue_400</item>
+    </style>
+
+    <style name="DialogOverlayTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/background_rounded_10_radius</item>
+        <item name="android:windowMinWidthMinor">0%</item>
     </style>
 </resources>

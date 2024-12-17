@@ -1,5 +1,9 @@
 package com.appero.vehiclecomplaint.domain.entities
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Report(
     val reportId: String?,
     val vehicleId: String?,
@@ -10,4 +14,4 @@ data class Report(
     val createdAt: String?,
     val createdBy: String?,
     val reportStatus: String?
-)
+): Parcelable

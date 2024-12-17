@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="Widget.Theme.VehicleComplaintReportMiniTest.MyView" parent="">
+        <item name="android:background">@color/gray_600</item>
+        <item name="exampleColor">@color/light_blue_600</item>
+    </style>
+
+    <style name="DialogOverlayTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/background_rounded_10_radius</item>
+        <item name="android:windowMinWidthMinor">0%</item>
+    </style>
+</resources>

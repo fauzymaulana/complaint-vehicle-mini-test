@@ -1,20 +1,28 @@
 package com.appero.vehiclecomplaint.presentation.list
 
 import android.Manifest
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appero.vehiclecomplaint.R
 import com.appero.vehiclecomplaint.databinding.FragmentListReportBinding
 import com.appero.vehiclecomplaint.domain.entities.Report
+import com.appero.vehiclecomplaint.domain.entities.Vehicle
+import com.appero.vehiclecomplaint.presentation.dialog.FormReportDialog
 import com.appero.vehiclecomplaint.presentation.list.adapter.ReportComplaintAdapter
 import com.appero.vehiclecomplaint.utilities.OnClickListenerAdapter
 import com.appero.vehiclecomplaint.utilities.ResultState
@@ -22,6 +30,7 @@ import com.appero.vehiclecomplaint.utilities.observe
 import com.appero.vehiclecomplaint.utilities.permission.PermissionHelper
 import com.appero.vehiclecomplaint.utilities.permission.PermissionListener
 import com.appero.vehiclecomplaint.utilities.permission.intent.openPermissionSetting
+import com.appero.vehiclecomplaint.utilities.pop_up.GeneralDialog
 
 class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener {
 
@@ -38,11 +47,20 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
         )
     }
 
+    private val vehicleList: MutableList<Vehicle> = mutableListOf<Vehicle>()
+
     private lateinit var permissionHelper: PermissionHelper
+    private lateinit var pickImageLauncher: ActivityResultLauncher<String>
+    private lateinit var generalDialog: GeneralDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         permissionHelper = PermissionHelper(this, this)
+        pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                GeneralDialog(requireContext()).formDialog.imgPreview.setImageURI(it)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -85,6 +103,7 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
 
     private fun observer() {
         observe(viewModel.allComplaintResultState, ::observeReportComplaints)
+        observe(viewModel.allVehicleResultState, ::observeVehicle)
     }
 
     private fun setupAdapter() {
@@ -113,9 +132,35 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
         }
     }
 
+    private fun observeVehicle(resultState: ResultState<List<Vehicle>>) {
+        when(resultState) {
+            is ResultState.BadRequest -> {}
+            is ResultState.Forbidden -> {}
+            is ResultState.HideLoading -> {}
+            is ResultState.Loading -> {}
+            is ResultState.NoConnection, is ResultState.Timeout -> {}
+            is ResultState.NotFound -> {}
+            is ResultState.Success -> {
+                vehicleList.clear()
+                resultState.data?.toMutableList()?.let { vehicleList.addAll(it) }
+                if (vehicleList.isNotEmpty()) {
+                    binding.btnAddReport.isEnabled = true
+                }
+            }
+            is ResultState.Unauthorized -> {}
+            is ResultState.UnknownError -> {}
+            else -> {
+
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
-        viewModel.getAllComplaint()
+        viewModel.apply {
+            getAllComplaint()
+            getAllVehicle()
+        }
     }
 
     override fun shouldShowRationaleInfo() {
@@ -126,7 +171,6 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
         if (isGranted){
             startForResult.launch(permissionsToRequest)
             findNavController().navigate(R.id.action_listReportFragment_to_cameraCaptureFragment)
-            // TODO: Navigation to Camera 
         } else {
             shouldShowRationaleInfo()
         }
@@ -153,7 +197,41 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
     override fun onClick(v: View?) {
         when(v?.id) {
             binding.btnAddReport.id -> {
-                permissionHelper.checkForMultiplePermissions(permissionsToRequest)
+//                permissionHelper.checkForMultiplePermissions(permissionsToRequest)
+                GeneralDialog(requireContext()).setFormDialog(
+                    dateTime = "Senin, 12 Jan 24 11:30",
+                    listVehicle = vehicleList,
+                    activityResultLauncher = pickImageLauncher
+                ) { btnSubmit, btnCancel, dropDownVehicle, imgPreview, dialog ->
+                    var selectedVehicle: Vehicle? = null
+                    dropDownVehicle.setOnItemClickListener { _, _, position, _ ->
+                        selectedVehicle = vehicleList[position]
+                        Toast.makeText(context, "KENDARANA YANG DI PILIH ${selectedVehicle?.type} license ${selectedVehicle?.licenseNumber}", Toast.LENGTH_SHORT).show()
+                    }
+
+                    dropDownVehicle.setOnFocusChangeListener { _, hasFocus ->
+                        if (hasFocus) {
+                            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(dropDownVehicle.windowToken, 0)
+                        }
+                    }
+
+                    imgPreview.setOnClickListener {
+                        pickImageLauncher.launch("image/*")
+//                        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+//                            uri?.let {
+//                                // Tampilkan gambar ke ImageView dalam dialog
+//                                GeneralDialog(requireContext()).formDialog.imgPreview.setImageURI(it)
+//                            }
+//                        }
+                    }
+
+                    btnCancel.setOnClickListener { dialog.dismiss() }
+
+
+                }
+//                val dialog = FormReportDialog.newInstance("TITLE", "MESSAGE")
+//                dialog.show(parentFragmentManager, "Report")
             }
         }
     }
