@@ -42,7 +42,7 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
     private val permissionsToRequest by lazy {
         arrayOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.POST_NOTIFICATIONS,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
         )
     }
@@ -170,9 +170,39 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
     override fun isPermissionGranted(isGranted: Boolean) {
         if (isGranted){
             startForResult.launch(permissionsToRequest)
-            findNavController().navigate(R.id.action_listReportFragment_to_cameraCaptureFragment)
-        } else {
-            shouldShowRationaleInfo()
+//            findNavController().navigate(R.id.action_listReportFragment_to_cameraCaptureFragment)
+            GeneralDialog(requireContext()).setFormDialog(
+                dateTime = "Senin, 12 Jan 24 11:30",
+                listVehicle = vehicleList,
+                activityResultLauncher = pickImageLauncher
+            ) { btnSubmit, btnCancel, dropDownVehicle, imgPreview, dialog ->
+                var selectedVehicle: Vehicle?
+                dropDownVehicle.setOnItemClickListener { _, _, position, _ ->
+                    selectedVehicle = vehicleList[position]
+                    Toast.makeText(context, "KENDARANA YANG DI PILIH ${selectedVehicle?.type} license ${selectedVehicle?.licenseNumber}", Toast.LENGTH_SHORT).show()
+                }
+
+                dropDownVehicle.setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(dropDownVehicle.windowToken, 0)
+                    }
+                }
+
+                imgPreview.setOnClickListener {
+                    pickImageLauncher.launch("image/*")
+//                        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+//                            uri?.let {
+//                                // Tampilkan gambar ke ImageView dalam dialog
+//                                GeneralDialog(requireContext()).formDialog.imgPreview.setImageURI(it)
+//                            }
+//                        }
+                }
+
+                btnCancel.setOnClickListener { dialog.dismiss() }
+
+
+            }
         }
     }
 
@@ -197,39 +227,8 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
     override fun onClick(v: View?) {
         when(v?.id) {
             binding.btnAddReport.id -> {
-//                permissionHelper.checkForMultiplePermissions(permissionsToRequest)
-                GeneralDialog(requireContext()).setFormDialog(
-                    dateTime = "Senin, 12 Jan 24 11:30",
-                    listVehicle = vehicleList,
-                    activityResultLauncher = pickImageLauncher
-                ) { btnSubmit, btnCancel, dropDownVehicle, imgPreview, dialog ->
-                    var selectedVehicle: Vehicle? = null
-                    dropDownVehicle.setOnItemClickListener { _, _, position, _ ->
-                        selectedVehicle = vehicleList[position]
-                        Toast.makeText(context, "KENDARANA YANG DI PILIH ${selectedVehicle?.type} license ${selectedVehicle?.licenseNumber}", Toast.LENGTH_SHORT).show()
-                    }
+                permissionHelper.checkForMultiplePermissions(permissionsToRequest)
 
-                    dropDownVehicle.setOnFocusChangeListener { _, hasFocus ->
-                        if (hasFocus) {
-                            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            imm.hideSoftInputFromWindow(dropDownVehicle.windowToken, 0)
-                        }
-                    }
-
-                    imgPreview.setOnClickListener {
-                        pickImageLauncher.launch("image/*")
-//                        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-//                            uri?.let {
-//                                // Tampilkan gambar ke ImageView dalam dialog
-//                                GeneralDialog(requireContext()).formDialog.imgPreview.setImageURI(it)
-//                            }
-//                        }
-                    }
-
-                    btnCancel.setOnClickListener { dialog.dismiss() }
-
-
-                }
 //                val dialog = FormReportDialog.newInstance("TITLE", "MESSAGE")
 //                dialog.show(parentFragmentManager, "Report")
             }
