@@ -11,6 +11,10 @@ plugins {
     id("kotlin-kapt")
 }
 
+apply {
+    plugin("realm-android")
+}
+
 val localProperties = Properties().apply {
     load(FileInputStream(rootProject.file("local.properties")))
 }

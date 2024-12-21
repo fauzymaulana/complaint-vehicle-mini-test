@@ -1,6 +1,6 @@
 package com.appero.vehiclecomplaint.data.api
 
-import com.appero.vehiclecomplaint.utilities.networking.RequestClient
+import com.appero.vehiclecomplaint.data.config.networking.RequestClient
 
 class ComplaintConfig {
     companion object {

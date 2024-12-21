@@ -1,4 +1,4 @@
-package com.klik.adzkia.core.utilities
+package com.appero.vehiclecomplaint.utilities.helpers
 
 import java.io.IOException
 import retrofit2.Response

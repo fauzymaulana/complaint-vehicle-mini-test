@@ -1,9 +1,5 @@
-package com.appero.vehiclecomplaint.utilities
+package com.appero.vehiclecomplaint.utilities.helpers
 
-import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.klik.adzkia.core.utilities.RetrofitException
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -47,8 +43,8 @@ fun <T, R> responseBaseDataSourceApiToResultState(
 
                 return ResultState.NotFound(
                     errorMessage,
-                null, code = baseDataSourceApi.code()
-            )
+                    null, code = baseDataSourceApi.code()
+                )
         }
         403 -> {
             val errorMessage = baseDataSourceApi.message() ?:

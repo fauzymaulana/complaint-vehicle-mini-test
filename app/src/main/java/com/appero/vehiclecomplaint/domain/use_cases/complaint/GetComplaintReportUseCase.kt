@@ -1,14 +1,13 @@
-package com.appero.vehiclecomplaint.domain.use_cases
+package com.appero.vehiclecomplaint.domain.use_cases.complaint
 
 import com.appero.vehiclecomplaint.data.entities.remote.ReportResponse
 import com.appero.vehiclecomplaint.domain.entities.Report
 import com.appero.vehiclecomplaint.domain.mapper.toListEntity
 import com.appero.vehiclecomplaint.domain.repositories.ComplaintReportRepository
-import com.appero.vehiclecomplaint.utilities.ResultState
-import com.appero.vehiclecomplaint.utilities.responseBaseDataSourceApiToResultState
-import com.appero.vehiclecomplaint.utilities.responseErrorToResultStateError
+import com.appero.vehiclecomplaint.utilities.helpers.ResultState
+import com.appero.vehiclecomplaint.utilities.helpers.responseBaseDataSourceApiToResultState
+import com.appero.vehiclecomplaint.utilities.helpers.responseErrorToResultStateError
 import io.reactivex.Single
-import retrofit2.adapter.rxjava2.Result
 
 interface GetComplaintReportUseCase {
     operator fun invoke(userId: String): Single<ResultState<List<Report>>>

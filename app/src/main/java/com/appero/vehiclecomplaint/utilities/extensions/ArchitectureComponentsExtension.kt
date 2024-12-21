@@ -1,4 +1,4 @@
-package com.appero.vehiclecomplaint.utilities
+package com.appero.vehiclecomplaint.utilities.extensions
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

@@ -1,4 +1,4 @@
-package com.appero.vehiclecomplaint.utilities
+package com.appero.vehiclecomplaint.utilities.helpers
 
 sealed class ResultState<T>(
     val data: T? = null,

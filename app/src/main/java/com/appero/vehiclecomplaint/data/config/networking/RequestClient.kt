@@ -1,4 +1,4 @@
-package com.appero.vehiclecomplaint.utilities.networking
+package com.appero.vehiclecomplaint.data.config.networking
 
 import com.appero.vehiclecomplaint.BuildConfig
 import okhttp3.OkHttpClient

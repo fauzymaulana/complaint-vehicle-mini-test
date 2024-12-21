@@ -5,39 +5,44 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.appero.vehiclecomplaint.R
 import com.appero.vehiclecomplaint.databinding.FragmentListReportBinding
+import com.appero.vehiclecomplaint.domain.entities.FormVehicle
 import com.appero.vehiclecomplaint.domain.entities.Report
+import com.appero.vehiclecomplaint.domain.entities.SnackBar
+import com.appero.vehiclecomplaint.domain.entities.TypeSnackBar
 import com.appero.vehiclecomplaint.domain.entities.Vehicle
-import com.appero.vehiclecomplaint.presentation.dialog.FormReportDialog
 import com.appero.vehiclecomplaint.presentation.list.adapter.ReportComplaintAdapter
-import com.appero.vehiclecomplaint.utilities.OnClickListenerAdapter
-import com.appero.vehiclecomplaint.utilities.ResultState
-import com.appero.vehiclecomplaint.utilities.observe
+import com.appero.vehiclecomplaint.utilities.base.BaseFragment
+import com.appero.vehiclecomplaint.utilities.Constant.Companion.USER_ID
+import com.appero.vehiclecomplaint.utilities.helpers.OnClickListenerAdapter
+import com.appero.vehiclecomplaint.utilities.helpers.ResultState
+import com.appero.vehiclecomplaint.utilities.date_time.DateTimeHelper
+import com.appero.vehiclecomplaint.utilities.extensions.observe
 import com.appero.vehiclecomplaint.utilities.permission.PermissionHelper
 import com.appero.vehiclecomplaint.utilities.permission.PermissionListener
 import com.appero.vehiclecomplaint.utilities.permission.intent.openPermissionSetting
 import com.appero.vehiclecomplaint.utilities.pop_up.GeneralDialog
+import java.time.LocalDateTime
 
-class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener {
+class ListReportFragment : BaseFragment(), PermissionListener, View.OnClickListener {
 
     private var _binding: FragmentListReportBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: ReportViewModel by viewModels()
+    private var showDialogDirectly = false
+    private var imagePath: String? = null
+    private lateinit var alertDialog: AlertDialog
 
     private val permissionsToRequest by lazy {
         arrayOf(
@@ -73,10 +78,21 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getParamArgs()
         observer()
         setupAdapter()
         initListeners()
 
+    }
+
+    private fun getParamArgs() {
+        showDialogDirectly = ListReportFragmentArgs.fromBundle(arguments as Bundle).showPopUpDirectly
+        imagePath = ListReportFragmentArgs.fromBundle(arguments as Bundle).imagePath
+
+        Log.e("TAG", "getParamArgs: image PTAH ${imagePath}", )
+        if (showDialogDirectly) {
+            checkDialog(imagePath)
+        }
     }
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
@@ -104,6 +120,7 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
     private fun observer() {
         observe(viewModel.allComplaintResultState, ::observeReportComplaints)
         observe(viewModel.allVehicleResultState, ::observeVehicle)
+        observe(viewModel.showSnackBar, ::observeSnackbar)
     }
 
     private fun setupAdapter() {
@@ -164,50 +181,110 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
     }
 
     override fun shouldShowRationaleInfo() {
+        Log.e("TAG", "shouldShowRationaleInfo: INI shouldShowRationaleInfo", )
         dialogPermissionDenied()
     }
 
-    override fun isPermissionGranted(isGranted: Boolean) {
-        if (isGranted){
-            startForResult.launch(permissionsToRequest)
-//            findNavController().navigate(R.id.action_listReportFragment_to_cameraCaptureFragment)
-            GeneralDialog(requireContext()).setFormDialog(
-                dateTime = "Senin, 12 Jan 24 11:30",
-                listVehicle = vehicleList,
-                activityResultLauncher = pickImageLauncher
-            ) { btnSubmit, btnCancel, dropDownVehicle, imgPreview, dialog ->
-                var selectedVehicle: Vehicle?
-                dropDownVehicle.setOnItemClickListener { _, _, position, _ ->
-                    selectedVehicle = vehicleList[position]
-                    Toast.makeText(context, "KENDARANA YANG DI PILIH ${selectedVehicle?.type} license ${selectedVehicle?.licenseNumber}", Toast.LENGTH_SHORT).show()
+    private fun formAddComplaintDialog(imagePath: String? = null) {
+        val timestamp = LocalDateTime.now()
+        val timeFormatted = DateTimeHelper().formatDateTime(timestamp)
+
+        GeneralDialog(requireContext()).setFormDialog(
+            dateTime = timeFormatted,
+            listVehicle = vehicleList,
+            activityResultLauncher = pickImageLauncher,
+            imagePath = imagePath
+
+        ) { btnSubmit, btnCancel, dropDownVehicle, imgPreview, notesLayout, etNotes, dialog ->
+            alertDialog = dialog
+            var selectedVehicle: Vehicle? = null
+            dropDownVehicle.setOnItemClickListener { _, _, position, _ ->
+                selectedVehicle = vehicleList[position]
+            }
+
+            dropDownVehicle.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(dropDownVehicle.windowToken, 0)
+                }
+            }
+
+//            if (imagePath != "" && imagePath != null) {
+//                Glide.with(requireContext())
+//                    .load(imagePath)
+//                    .centerCrop()
+//                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .error(R.drawable.img_not_found)
+//                    .into(imgPreview)
+//            }
+            imgPreview.setOnClickListener {
+//                pickImageLauncher.launch("image/*")
+                dismissDialog()
+                navigateToCamera()
+            }
+
+            btnCancel.setOnClickListener {
+                this.imagePath = null
+                dismissDialog()
+            }
+            btnSubmit.setOnClickListener {
+
+                if (imagePath != null && selectedVehicle != null && !etNotes.text.isNullOrEmpty()) {
+                    val vehicleData = FormVehicle(
+                        vehicleId = selectedVehicle!!.vehicleId,
+                        notes = etNotes.text.toString(),
+                        userId = USER_ID,
+                        photo = imagePath
+                    )
+
+                    viewModel.postComplaint(vehicleData)
+                    return@setOnClickListener dismissDialog()
                 }
 
-                dropDownVehicle.setOnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus) {
-                        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(dropDownVehicle.windowToken, 0)
-                    }
-                }
+                viewModel.showSnackBar(
+                    message = "Data tidak boleh kosong",
+                    status = TypeSnackBar.ERROR,
+                    action = null
+                )
 
-                imgPreview.setOnClickListener {
-                    pickImageLauncher.launch("image/*")
-//                        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-//                            uri?.let {
-//                                // Tampilkan gambar ke ImageView dalam dialog
-//                                GeneralDialog(requireContext()).formDialog.imgPreview.setImageURI(it)
-//                            }
-//                        }
-                }
-
-                btnCancel.setOnClickListener { dialog.dismiss() }
-
-
+                return@setOnClickListener
             }
         }
     }
 
+    override fun isPermissionGranted(isGranted: Boolean) {
+        Log.e("TAG", "isPermissionGranted: ĩiiiiiiiiiii", )
+        if (isGranted){
+            startForResult.launch(permissionsToRequest)
+            Log.e("TAG", "isPermissionGranted: BERAPA KALI DI EKSEKUSI ?", )
+            checkDialog(null)
+        }
+    }
+
     override fun isDenied(isDenied: Boolean) {
-        dialogPermissionDenied()
+        Log.e("TAG", "isDenied: INI DENIED", )
+//        dialogPermissionDenied()
+    }
+
+    private fun observeSnackbar(snackBar: SnackBar) {
+        showSnackBarWithAction(
+            snack = snackBar,
+            actionMessage = if (snackBar.action != null) "Muat ulang" else null
+        ) {
+            snackBar.action
+        }
+    }
+
+    private fun checkDialog(imagePath: String?) {
+        if (!::alertDialog.isInitialized || !alertDialog.isShowing) {
+            formAddComplaintDialog(imagePath)
+        }
+    }
+
+    private fun dismissDialog() {
+        if (::alertDialog.isInitialized && alertDialog.isShowing) {
+            alertDialog.dismiss()
+        }
     }
 
     private fun dialogPermissionDenied() {
@@ -233,5 +310,10 @@ class ListReportFragment : Fragment(), PermissionListener, View.OnClickListener 
 //                dialog.show(parentFragmentManager, "Report")
             }
         }
+    }
+
+    private fun navigateToCamera() {
+        val camera = ListReportFragmentDirections.actionListReportFragmentToCameraCaptureFragment()
+        findNavController().navigate(camera)
     }
 }

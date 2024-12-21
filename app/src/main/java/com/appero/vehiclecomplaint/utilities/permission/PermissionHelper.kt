@@ -42,6 +42,7 @@ class PermissionHelper(context: Fragment, permissionListener: PermissionListener
                 permissionListener.isPermissionGranted(true)
             }
             else{
+                Log.e("TAG", "INI LA: ", )
                 arrStr.add(it.key)
             }
         }
@@ -94,11 +95,6 @@ class PermissionHelper(context: Fragment, permissionListener: PermissionListener
                   }
               }
           }
-
-           if(isDenied){
-               permissionListener?.isPermissionGranted(false)
-//               permissionListener?.shouldShowRationaleInfo()
-           }
     }
 
     private fun hasPermission(permission: String): Boolean {

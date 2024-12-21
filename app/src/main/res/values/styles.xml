@@ -38,6 +38,7 @@
 
     <style name="DialogOverlayTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/background_rounded_10_radius</item>
+        <item name="android:backgroundTint">@color/gray_400</item>
         <item name="android:windowMinWidthMinor">0%</item>
     </style>
 </resources>

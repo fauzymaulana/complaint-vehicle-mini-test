@@ -1,4 +1,4 @@
-package com.appero.vehiclecomplaint.utilities
+package com.appero.vehiclecomplaint.utilities.base
 
 import android.util.Log
 import androidx.lifecycle.LiveData

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.appero.vehiclecomplaint.domain.entities.Report
-import com.appero.vehiclecomplaint.utilities.OnClickListenerAdapter
+import com.appero.vehiclecomplaint.utilities.helpers.OnClickListenerAdapter
 
 class ReportComplaintAdapter(
     private val onClick: OnClickListenerAdapter<Report>
